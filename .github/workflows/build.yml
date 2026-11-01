@@ -1,15 +1,24 @@
 name: build
 
+# 1 Nov 2026 (Nick): the repos are private, so every check costs money. A newer push to a PR cancels its older run
+# (main's runs are never cancelled), and a draft PR gets only the quick checks: opening it ready, or marking it
+# ready, runs everything.
 on:
   pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
   push:
     branches: [main]
+
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.sha }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 permissions:
   contents: read
 
 jobs:
   test:
+    if: github.event_name != 'pull_request' || !github.event.pull_request.draft
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1 (node24)
@@ -21,6 +30,8 @@ jobs:
 
   # Unsigned builds for now; B45.32 signs and notarises them.
   build:
+    # Installers cost the most minutes (Mac and Windows runners): main only.
+    if: github.event_name == 'push'
     strategy:
       fail-fast: false
       matrix:
