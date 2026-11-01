@@ -1,0 +1,86 @@
+/* Talyvor brand v4 (talyvor-queue brand-v4/tokens/tokens.css): dark first, light with the system. */
+@font-face { font-family: "Space Grotesk"; src: url(fonts/space-grotesk-latin.woff2) format("woff2"); font-weight: 300 700; font-display: swap; }
+@font-face { font-family: "Space Grotesk"; src: url(fonts/space-grotesk-latin-ext.woff2) format("woff2"); font-weight: 300 700; font-display: swap;
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: "IBM Plex Mono"; src: url(fonts/ibm-plex-mono-400-latin.woff2) format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "IBM Plex Mono"; src: url(fonts/ibm-plex-mono-500-latin.woff2) format("woff2"); font-weight: 500; font-display: swap; }
+
+:root {
+  --tv-canvas: #060A12; --tv-surface: #081220; --tv-raised: #0E1A2A;
+  --tv-line: rgba(126,147,171,.18); --tv-line-strong: rgba(126,147,171,.32);
+  --tv-ink: #E6EEF7; --tv-ink-muted: #7E93AB; --tv-label: #90ACC0;
+  --tv-accent: #3AD6C0; --tv-accent-hover: #55DFCC; --tv-on-accent: #060A12; --tv-accent-tint: #0E2B2E;
+  --tv-caution: #D6A93C; --tv-critical: #F0685C;
+  --tv-font-sans: "Space Grotesk", system-ui, sans-serif; --tv-font-mono: "IBM Plex Mono", ui-monospace, monospace;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) {
+  :root {
+    --tv-canvas: #F4F7FB; --tv-surface: #FFFFFF; --tv-raised: #FFFFFF;
+    --tv-line: rgba(6,10,18,.10); --tv-line-strong: rgba(6,10,18,.20);
+    --tv-ink: #060A12; --tv-ink-muted: #46586E; --tv-label: #646B79;
+    --tv-accent: #0F7A6C; --tv-accent-hover: #0A5F54; --tv-on-accent: #FFFFFF; --tv-accent-tint: #C9E6E0;
+    --tv-caution: #8A6A12; --tv-critical: #BF3B2E;
+    color-scheme: light;
+  }
+  .mark-dark { display: none; }
+  .mark-light { display: block !important; }
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; }
+body { display: flex; flex-direction: column; background: var(--tv-canvas); color: var(--tv-ink);
+  font: 15px/24px var(--tv-font-sans); border: 1px solid var(--tv-line-strong); border-radius: 10px; overflow: hidden; }
+[hidden] { display: none !important; }
+
+header { display: flex; align-items: center; gap: 10px; padding: 12px 12px 12px 16px; background: var(--tv-surface);
+  border-bottom: 1px solid var(--tv-line); -webkit-user-select: none; user-select: none; }
+.mark { width: 22px; height: 22px; }
+.mark-light { display: none; }
+h1 { font-size: 15px; font-weight: 600; margin: 0; flex: 1; }
+kbd { font: 12px/20px var(--tv-font-mono); color: var(--tv-ink-muted); border: 1px solid var(--tv-line); border-radius: 6px; padding: 0 6px; }
+
+section { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+#signed-out { padding: 28px 22px; gap: 4px; }
+.eyebrow { margin: 0; font-size: 12px; font-weight: 500; letter-spacing: .22em; text-transform: uppercase; color: var(--tv-label); }
+h2 { font-size: 28px; line-height: 34px; font-weight: 500; letter-spacing: -.01em; margin: 6px 0 12px; }
+.rule { width: 32px; height: 2px; background: var(--tv-accent); margin-bottom: 14px; }
+.muted { color: var(--tv-ink-muted); }
+.small { font-size: 13px; line-height: 20px; }
+#signed-out .primary { align-self: flex-start; margin-top: 14px; }
+
+button { font: 600 14px/20px var(--tv-font-sans); border-radius: 6px; cursor: pointer; }
+button:focus-visible, textarea:focus-visible { outline: 2px solid var(--tv-accent); outline-offset: 2px; }
+.primary { background: var(--tv-accent); color: var(--tv-on-accent); border: 0; padding: 10px 18px; }
+.primary:hover { background: var(--tv-accent-hover); }
+.primary:disabled { opacity: .5; cursor: default; }
+.secondary { background: transparent; color: var(--tv-ink); border: 1px solid var(--tv-line-strong); padding: 6px 12px; font-size: 13px; }
+.icon { display: grid; place-items: center; width: 32px; height: 32px; padding: 0; background: transparent;
+  border: 1px solid transparent; color: var(--tv-ink-muted); }
+.icon:hover { color: var(--tv-ink); border-color: var(--tv-line); }
+.icon svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+#mic[aria-pressed="true"] { color: var(--tv-accent); border-color: var(--tv-accent); }
+
+#approvals { margin: 12px 12px 0; padding: 10px 12px; background: var(--tv-raised); border: 1px solid var(--tv-line); border-radius: 10px; }
+#approvals-list { list-style: none; margin: 6px 0 0; padding: 0; display: grid; gap: 6px; }
+#approvals-list li, .waiting { display: flex; align-items: center; gap: 8px; }
+#approvals-list .what { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.amount { font-family: var(--tv-font-mono); font-variant-numeric: tabular-nums; }
+
+#messages { flex: 1; overflow-y: auto; list-style: none; margin: 0; padding: 14px 12px; display: flex; flex-direction: column; gap: 10px; }
+#messages li { max-width: 88%; padding: 8px 12px; border-radius: 10px; white-space: pre-wrap; overflow-wrap: anywhere; }
+#messages .hint { max-width: none; padding: 0 4px; }
+#messages .you { align-self: flex-end; background: var(--tv-accent-tint); }
+#messages .taly { align-self: flex-start; background: var(--tv-surface); border: 1px solid var(--tv-line); }
+#messages .problem { align-self: flex-start; color: var(--tv-critical); border: 1px solid var(--tv-line); }
+.waiting { margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--tv-line); font-size: 13px; color: var(--tv-caution); }
+.waiting span { flex: 1; }
+
+#composer { padding: 10px 12px 12px; border-top: 1px solid var(--tv-line); background: var(--tv-surface); }
+textarea { width: 100%; resize: none; font: 15px/22px var(--tv-font-sans); color: var(--tv-ink); background: var(--tv-canvas);
+  border: 1px solid var(--tv-line-strong); border-radius: 6px; padding: 8px 10px; }
+.actions { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
+.actions #mic-note { flex: 1; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+@media (prefers-reduced-motion: no-preference) { button { transition: background .12s, color .12s, border-color .12s; } }
