@@ -8,7 +8,7 @@ use rand::RngCore;
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 use std::time::{Duration, Instant};
-use tokio::io::{AsyncReadExt, AsyncWriteExt};
+use tokio::io::{AsyncBufReadExt, AsyncReadExt, AsyncWriteExt, BufReader};
 use tokio::net::TcpListener;
 
 pub const SCOPES: &str = "wallets:read invoices:draft payments:prepare";
@@ -102,11 +102,12 @@ pub async fn sign_in(http: &reqwest::Client, base: &str, open: impl FnOnce(Strin
 
     let code = tokio::time::timeout(SIGN_IN_WAIT, async {
         loop {
-            let (mut sock, _) = listener.accept().await.map_err(|e| e.to_string())?;
-            let mut buf = vec![0u8; 8192];
-            let n = sock.read(&mut buf).await.unwrap_or(0);
-            let req = String::from_utf8_lossy(&buf[..n]);
-            let got = code_from_callback(req.lines().next().unwrap_or(""), &state, base);
+            let (sock, _) = listener.accept().await.map_err(|e| e.to_string())?;
+            // The request line can arrive in several pieces; read up to its end, 8 KiB at most.
+            let mut sock = BufReader::new(sock);
+            let mut line = String::new();
+            let _ = (&mut sock).take(8192).read_line(&mut line).await;
+            let got = code_from_callback(line.trim_end(), &state, base);
             let page = match &got {
                 Ok(_) => "You are signed in to Talyvor. You can close this tab.".to_string(),
                 Err(e) => format!("Talyvor could not sign you in: {}", html_escape(e)),

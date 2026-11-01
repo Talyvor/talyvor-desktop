@@ -91,7 +91,10 @@ fn browser(base: String, seen: Arc<Mutex<Seen>>) -> impl FnOnce(String) {
         let back = url::Url::parse_with_params(&q["redirect_uri"], &[("code", "code-1"), ("state", &q["state"]), ("iss", &base)]).unwrap();
         std::thread::spawn(move || {
             let mut s = std::net::TcpStream::connect(back.socket_addrs(|| None).unwrap()[0]).unwrap();
-            write!(s, "GET {}?{} HTTP/1.1\r\nHost: 127.0.0.1\r\n\r\n", back.path(), back.query().unwrap()).unwrap();
+            // In two pieces, as a browser may send it.
+            s.write_all(b"GET ").unwrap();
+            std::thread::sleep(std::time::Duration::from_millis(50));
+            write!(s, "{}?{} HTTP/1.1\r\nHost: 127.0.0.1\r\n\r\n", back.path(), back.query().unwrap()).unwrap();
             let mut page = String::new();
             let _ = s.read_to_string(&mut page);
         });
