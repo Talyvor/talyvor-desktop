@@ -1,0 +1,7 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "The mini-chat window: Tauri's core events only; Talyvor is reached through the app's own commands.",
+  "windows": ["taly"],
+  "permissions": ["core:default"]
+}

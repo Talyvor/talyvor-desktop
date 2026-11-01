@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Taly</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header>
+    <img class="mark mark-dark" src="talyvor-mark-flat-dark.svg" alt="">
+    <img class="mark mark-light" src="talyvor-mark-flat-light.svg" alt="">
+    <h1>Taly</h1>
+    <kbd id="shortcut"></kbd>
+    <button id="close" class="icon" aria-label="Close Taly" title="Close (Esc)">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </header>
+
+  <section id="signed-out" hidden>
+    <p class="eyebrow">On the computer</p>
+    <h2>Ask Taly from anywhere</h2>
+    <div class="rule"></div>
+    <p class="muted">Sign in with your Talyvor account. Taly can look things up and prepare payments; you approve them on your phone or on the web.</p>
+    <button id="sign-in" class="primary">Sign in with Talyvor</button>
+    <p id="sign-in-note" class="muted small" role="status"></p>
+  </section>
+
+  <section id="signed-in" hidden>
+    <div id="approvals" hidden>
+      <p class="eyebrow" id="approvals-title"></p>
+      <ul id="approvals-list"></ul>
+    </div>
+    <ol id="messages" aria-live="polite">
+      <li class="hint muted">Ask about your balances, bills or agents, or have Taly prepare a payment for you to approve.</li>
+    </ol>
+    <form id="composer">
+      <label class="visually-hidden" for="box">Message Taly</label>
+      <textarea id="box" rows="2" placeholder="Ask Taly…"></textarea>
+      <div class="actions">
+        <button type="button" id="mic" class="icon" aria-label="Hold to talk" title="Hold to talk">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>
+        </button>
+        <span id="mic-note" class="muted small" role="status"></span>
+        <button type="submit" id="send" class="primary">Send</button>
+      </div>
+    </form>
+  </section>
+</body>
+</html>
